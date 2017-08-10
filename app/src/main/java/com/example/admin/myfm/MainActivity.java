@@ -1,6 +1,6 @@
 package com.example.admin.myfm;
 
-import android.animation.ValueAnimator;
+import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,9 +18,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,7 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MainBroadcastR mainBroadcastR;
     private SharedPreferencesUtil sharedPreferencesUtil;
     Intent serviceBroadCast;
-
+    private ObjectAnimator objectAnimator;
+    private long mCurrentPlayTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         sharedPreferencesUtil = new SharedPreferencesUtil(this);
         playRadio();
+
+
     }
 
     private void initView() {
@@ -118,34 +119,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.btnNext).setOnClickListener(this);
         btnPlay.setOnClickListener(this);
-        animation = new RotateAnimation(
-                0,
-                360,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f);
-//-------------
-//        Drawable drawable1 = getResources().getDrawable(R.drawable.common_player_play);
-//        drawable1.setBounds(0, 0, 90, 90);
-//
-//        animator = ObjectAnimator.ofFloat(drawable1, "x", 0f, 200f);
-//        animator.setRepeatCount(ValueAnimator.INFINITE);
-//        animator.setDuration(2000l);
-//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//
-//            }
-//        });
-        //---------------------
+
+        objectAnimator = ObjectAnimator.ofFloat(btnPlay, "rotation", 0f, 360f);
+        objectAnimator.setDuration(3000);
+        objectAnimator.setInterpolator(new LinearInterpolator());
+        objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+        objectAnimator.setRepeatMode(ObjectAnimator.RESTART);
+
         mainBroadcastR = new MainBroadcastR();
         IntentFilter intentFilter = new IntentFilter(RadioConstant.MAIN_BROADCAST);
         registerReceiver(mainBroadcastR, intentFilter);
     }
 
-    RotateAnimation animation;
-    ValueAnimator animator;
 
     @Override
     protected void onResume() {
@@ -295,6 +280,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (myListener != null)
                 mLocationClient.unRegisterLocationListener(myListener);
         }
+        if (objectAnimator != null) {
+            objectAnimator.cancel();
+        }
     }
 
     public void setStatus(String imgUrl, String title, String name) {
@@ -324,7 +312,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (RadioConstant.isPlaying) {
                     intent.putExtra("type", RadioConstant.PAUSE);
                 } else {
-                    intent.putExtra("type", RadioConstant.PLAY);
+                    if (RadioConstant.preRadioId == RadioConstant.radioId) {
+                        intent.putExtra("type", RadioConstant.REPLAY);
+                    } else {
+                        intent.putExtra("type", RadioConstant.PLAY);
+                    }
                 }
 
                 break;
@@ -338,31 +330,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onReceive(Context context, Intent intent) {
             switch (intent.getIntExtra("type", 0)) {
                 case RadioConstant.REPLAY://继续播放
+                    if (objectAnimator.isPaused()) {
+                        objectAnimator.resume();
+                    }
                     setStatus(sharedPreferencesUtil.getImageUrl(), sharedPreferencesUtil.getName(), sharedPreferencesUtil.getprogramName());
                     break;
                 case RadioConstant.PLAY://播放
                     if (RadioConstant.isPlaying) {
-                        animation.setDuration(3000);
-                        // 设置动画重复的次数
-                        animation.setRepeatCount(Animation.INFINITE);
-                        // 设置动画重复的模式
-                        animation.setRepeatMode(Animation.INFINITE);
-                        // 设置动画结束以后的状态
-                        animation.setFillAfter(false);
-                        LinearInterpolator lin = new LinearInterpolator();
-                        animation.setInterpolator(lin);
-                        btnPlay.setAnimation(animation);
-                        animation.start();
+                        objectAnimator.start();
                     } else {
-                        if (animation.hasStarted()) {
-                            animation.cancel();
+                        if (objectAnimator.isStarted()) {
+                            objectAnimator.pause();
                         }
                     }
                     setStatus(sharedPreferencesUtil.getImageUrl(), sharedPreferencesUtil.getName(), sharedPreferencesUtil.getprogramName());
                     break;
                 case RadioConstant.PAUSE://暂停
-                    if (animation.hasStarted()) {
-                        animation.cancel();
+                    if (objectAnimator.isStarted()) {
+                        objectAnimator.pause();
                     }
                     setStatus(sharedPreferencesUtil.getImageUrl(), sharedPreferencesUtil.getName(), sharedPreferencesUtil.getprogramName());
                     break;
@@ -390,6 +375,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.i(TAG, "离线定位结果" + location.getLocType());
                 } else if (location.getLocType() == BDLocation.TypeServerError) {
                     Log.e(TAG, "服务端网络定位失败" + location.getLocType());
+                    return;
+                } else if (location.getLocType() == BDLocation.TypeOffLineLocationFail) {
+                    Log.e(TAG, "离线定位失败" + location.getLocType());
                     return;
                 } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
                     Log.e(TAG, "网络不同导致定位失败，请检查网络是否通畅" + location.getLocType());
@@ -461,39 +449,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.i(TAG, "mLocationClient start");
     }
 
-//    @Override
-//    public void onAnimationUpdate(ValueAnimator animation) {
-//        /**
-//         * 如果是暂停则将状态保持下来，并每个刷新动画的时间了；来设置当前时间，让动画
-//         * 在时间上处于暂停状态，同时要设置一个静止的时间加速器，来保证动画不会抖动
-//         */
-//        if(isPause){
-//            if(!isPaused){
-//                mCurrentPlayTime = animation.getCurrentPlayTime();
-//                fraction = animation.getAnimatedFraction();
-//                animation.setInterpolator(new TimeInterpolator() {
-//                    @Override
-//                    public float getInterpolation(float input) {
-//                        return fraction;
-//                    }
-//                });
-//                isPaused =  true;
-//            }
-//            //每隔动画播放的时间，我们都会将播放时间往回调整，以便重新播放的时候接着使用这个时间,同时也为了让整个动画不结束
-//            new CountDownTimer(ValueAnimator.getFrameDelay(), ValueAnimator.getFrameDelay()){
-//
-//                @Override
-//                public void onTick(long millisUntilFinished) {
-//                }
-//
-//                @Override
-//                public void onFinish() {
-//                    animator.setCurrentPlayTime(mCurrentPlayTime);
-//                }
-//            }.start();
-//        }else{
-//            //将时间拦截器恢复成线性的，如果您有自己的，也可以在这里进行恢复
-//            animation.setInterpolator(null);
-//        }
-//    }
 }

@@ -406,6 +406,7 @@ public class ServiceBroadCast extends Service implements ExoPlayer.EventListener
         Log.i(TAG, "pause---");
 //        updataDB(RadioConstant.radioId, System.currentTimeMillis());
         RadioConstant.isPlaying = false;
+        RadioConstant.preRadioId = RadioConstant.idList.get(RadioConstant.PLAYING_POSITION);
         player.setPlayWhenReady(false);
         //需要发个广播停止动画
         Intent pauseIntent = new Intent();
