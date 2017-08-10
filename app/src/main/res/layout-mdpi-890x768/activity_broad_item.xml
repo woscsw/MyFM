@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginBottom="6px"
+    android:layout_marginLeft="20px"
+    android:layout_marginRight="20px"
+    android:background="@drawable/selector_listview_item_color">
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_centerVertical="true"
+        android:background="#ffffff" />
+
+    <ImageView
+        android:id="@+id/activity_broad_item_iv"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/activity_broad_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/activity_broad_item_iv"
+        android:text="北京交通广播"
+        android:textColor="#ffffff"
+        android:textSize="22sp" />
+    <TextView
+        android:id="@+id/btn_shoucang"
+        android:layout_width="140px"
+        android:layout_height="52px"
+        android:layout_marginLeft="574px"
+        android:text="收藏"
+        android:gravity="center_vertical|right"
+        android:paddingRight="20px"
+        android:layout_centerVertical="true"
+        android:textColor="#ffffff"
+        android:textSize="22px"
+        android:background="@drawable/bg_ed5052_r5"
+        android:drawableLeft="@drawable/gb_new_tv_unfavo"/>
+</RelativeLayout>

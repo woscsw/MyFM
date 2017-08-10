@@ -1,0 +1,39 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "com.example.admin.myfm"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    repositories {
+        jcenter()
+    }
+}
+dependencies {
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile files('libs/gson-2.2.1.jar')
+    compile files('libs/universal-image-loader-1.9.3.jar')
+    compile files('libs/xUtils-2.6.14.jar')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:design:23.0.0'
+    compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
+    compile 'com.google.android.exoplayer:extension-okhttp:r2.4.0'
+            compile 'com.squareup.okhttp3:okhttp:3.5.0'
+            compile 'com.facebook.stetho:stetho:1.4.2'
+            compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
+}

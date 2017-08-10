@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_color">
+    <TextView
+        android:id="@+id/back"
+        android:layout_width="120px"
+        android:layout_height="49px"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="24px"
+        android:drawableLeft="@drawable/setting_back"
+        android:visibility="gone"/>
+    <FrameLayout
+        android:id="@+id/main_fl_show"
+        android:layout_width="768px"
+        android:layout_height="630px"/>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#444444"
+        android:layout_marginTop="649px"/>
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="80px"
+        android:layout_height="80px"
+        android:layout_marginLeft="8px"
+        android:layout_marginTop="657px"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="279px"
+        android:layout_height="28px"
+        android:layout_marginLeft="103px"
+        android:layout_marginTop="670px"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:text="广播" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="279px"
+        android:layout_height="22px"
+        android:layout_marginLeft="103px"
+        android:layout_marginTop="703px"
+        android:textColor="#ffffff"
+        android:textSize="18sp"/>
+
+    <ImageView
+        android:id="@+id/btnPre"
+        android:layout_width="36px"
+        android:layout_height="36px"
+        android:layout_marginLeft="397px"
+        android:layout_marginTop="679px"
+        android:src="@drawable/btn_selector_player_prev"/>
+    <ImageView
+        android:id="@+id/btnNext"
+        android:layout_width="36px"
+        android:layout_height="36px"
+        android:layout_marginLeft="591px"
+        android:layout_marginTop="679px"
+        android:src="@drawable/btn_selector_player_next"/>
+    <com.example.admin.myfm.view.CircularImage
+        android:id="@+id/btnPlay"
+        android:layout_width="90px"
+        android:layout_height="90px"
+        android:layout_marginLeft="467px"
+        android:layout_marginTop="652px"
+        android:clickable="true"
+        android:visibility="visible" />
+</RelativeLayout>

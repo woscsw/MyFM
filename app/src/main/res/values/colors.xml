@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="main_color">#262626</color>
+    <color name="btn_selector_hot_color_n">#4aa7c9</color>
+    <color name="btn_selector_hot_color_d">#336699</color>
+    <color name="btn_selector_shengshi_color_n">#a17297</color>
+    <color name="btn_selector_shengshi_color_d">#336699</color>
+    <color name="btn_selector_wenyi_color_n">#d99566</color>
+    <color name="btn_selector_wenyi_color_d">#336699</color>
+    <color name="btn_selector_zixun_color_n">#8789ba</color>
+    <color name="btn_selector_zixun_color_d">#336699</color>
+    <color name="btn_selector_jingji_color_n">#c9b562</color>
+    <color name="btn_selector_jingji_color_d">#336699</color>
+    <color name="btn_selector_bendi_color_n">#d5a85e</color>
+    <color name="btn_selector_bendi_color_d">#4aa7c9</color>
+    <color name="btn_selector_qita_color_n">#4a8568</color>
+    <color name="btn_selector_qita_color_d">#4aa7c9</color>
+    <color name="btn_selector_music_color_n">#4aa7c9</color>
+    <color name="btn_selector_music_color_d">#4aa7c9</color>
+    <color name="btn_selector_shoucang_color_n">#bf8189</color>
+    <color name="btn_selector_shoucang_color_d">#4aa7c9</color>
+    <color name="btn_selector_shengshi_text_color_n">#424040</color>
+    <color name="btn_selector_shengshi_text_color_d">#e6006a</color>
+    <color name="selector_listview_item_color_d">#e6006a</color>
+    <color name="selector_listview_item_color_n">#424040</color>
+</resources>
